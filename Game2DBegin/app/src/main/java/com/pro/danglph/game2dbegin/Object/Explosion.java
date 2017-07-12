@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 
 import com.pro.danglph.game2dbegin.Surface.GameSurface;
+import com.pro.danglph.game2dbegin.Surface.IGameSurface;
 
 /**
  * Created by danglph on 10/07/2017.
@@ -15,9 +16,9 @@ public class Explosion extends GameMainObject {
     private int colIndex = -1;
 
     private boolean finish = false;
-    private GameSurface gameSurface;
+    private IGameSurface gameSurface;
 
-    public Explosion(Bitmap image, int x, int y, GameSurface gameSurface) {
+    public Explosion(Bitmap image, int x, int y, IGameSurface gameSurface) {
         super(image, 5, 5, x, y);
         this.gameSurface = gameSurface;
     }

@@ -6,6 +6,7 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.pro.danglph.game2dbegin.Surface.GameSurface;
+import com.pro.danglph.game2dbegin.Surface.GameSurface2;
 
 public class MainActivity extends Activity {
 
@@ -20,7 +21,8 @@ public class MainActivity extends Activity {
         // Loại bỏ tiêu đề.
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-        setContentView(new GameSurface(this));
+//        setContentView(new GameSurface(this));
+        setContentView(new GameSurface2(this));
 
 //        setContentView(R.layout.activity_main);
     }

@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.util.Log;
 
 import com.pro.danglph.game2dbegin.Surface.GameSurface;
+import com.pro.danglph.game2dbegin.Surface.IGameSurface;
 
 /**
  * Created by danglph on 10/07/2017.
@@ -36,9 +37,9 @@ public class Actress extends GameMainObject {
 
     private long lastDrawNanoTime = -1;
 
-    private GameSurface gameSurface;
+    private IGameSurface gameSurface;
 
-    public Actress(Bitmap image, int x, int y, GameSurface gameSurface) {
+    public Actress(Bitmap image, int x, int y, IGameSurface gameSurface) {
         super(image, 4, 3, x, y);
 
         this.gameSurface = gameSurface;

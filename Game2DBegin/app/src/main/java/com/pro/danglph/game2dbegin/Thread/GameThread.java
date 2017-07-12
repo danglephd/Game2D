@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.SurfaceHolder;
 
 import com.pro.danglph.game2dbegin.Surface.GameSurface;
+import com.pro.danglph.game2dbegin.Surface.IGameSurface;
 
 /**
  * Created by danglph on 10/07/2017.
@@ -13,10 +14,10 @@ import com.pro.danglph.game2dbegin.Surface.GameSurface;
 public class GameThread extends Thread {
 
     private boolean running;
-    private GameSurface gameSurface;
+    private IGameSurface gameSurface;
     private SurfaceHolder surfaceHolder;
 
-    public GameThread(GameSurface gameSurface, SurfaceHolder surfaceHolder) {
+    public GameThread(IGameSurface gameSurface, SurfaceHolder surfaceHolder) {
         this.gameSurface = gameSurface;
         this.surfaceHolder = surfaceHolder;
     }

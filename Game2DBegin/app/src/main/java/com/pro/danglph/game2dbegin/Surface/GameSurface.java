@@ -21,7 +21,7 @@ import java.util.List;
  * Created by danglph on 10/07/2017.
  */
 
-public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
+public class GameSurface extends SurfaceView implements SurfaceHolder.Callback, IGameSurface {
 
     private GameThread gameThread;
     List<Actress> lstChibi = null;
@@ -128,6 +128,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
         }
     }
 
+    @Override
     public void update() {
         if (this.chibi1 != null) {
             this.chibi1.update();
