@@ -153,7 +153,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
 
                 if(lstChibi.size() < 100) {
                     Actress chibi2 = new Actress(chibiBitmap1, this.getWidth() / 2, this.getHeight() / 2, this);
-                    lstChibi.add(chibi2)
+                    lstChibi.add(chibi2);
 //                this.expl = null;
                 }
             }
