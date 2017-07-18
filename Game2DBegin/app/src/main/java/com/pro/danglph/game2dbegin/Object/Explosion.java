@@ -16,11 +16,10 @@ public class Explosion extends GameMainObject {
     private int colIndex = -1;
 
     private boolean finish = false;
-    private IGameSurface gameSurface;
 
     public Explosion(Bitmap image, int x, int y, IGameSurface gameSurface) {
         super(image, 5, 5, x, y);
-        this.gameSurface = gameSurface;
+        this.igameSurface = gameSurface;
     }
 
     public void update() {

@@ -14,7 +14,7 @@ public class Tiger extends GameMainObject {
 
     private int rowIndex = 0;
     private int colIndex = -1;
-    private IGameSurface igameSurface;
+//    private IGameSurface igameSurface;
 
 
     public Tiger(Bitmap image, int x, int y, IGameSurface gameSurface) {

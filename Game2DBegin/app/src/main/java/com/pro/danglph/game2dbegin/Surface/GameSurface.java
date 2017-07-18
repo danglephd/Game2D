@@ -8,7 +8,7 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-import com.pro.danglph.game2dbegin.Object.Actress;
+import com.pro.danglph.game2dbegin.Object.Boy;
 import com.pro.danglph.game2dbegin.Object.Explosion;
 import com.pro.danglph.game2dbegin.R;
 import com.pro.danglph.game2dbegin.Thread.GameThread;
@@ -24,8 +24,8 @@ import java.util.List;
 public class GameSurface extends SurfaceView implements SurfaceHolder.Callback, IGameSurface {
 
     private GameThread gameThread;
-    List<Actress> lstChibi = null;
-        private Actress chibi1 = null;
+    List<Boy> lstChibi = null;
+        private Boy chibi1 = null;
     private Explosion expl = null;
     Bitmap chibiBitmap1 = BitmapFactory.decodeResource(this.getResources(), R.drawable.chibi1);
     Bitmap bitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.explo);
@@ -47,9 +47,9 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback, 
             int x = (int) event.getX();
             int y = (int) event.getY();
 
-            Iterator<Actress> iterator = this.lstChibi.iterator();
+            Iterator<Boy> iterator = this.lstChibi.iterator();
             while (iterator.hasNext()) {
-                Actress chibi = iterator.next();
+                Boy chibi = iterator.next();
                 if (chibi.isTouched(x, y)) {
                     iterator.remove();
                     expl = new Explosion(bitmap, chibi.getX(), chibi.getY(), this);
@@ -84,7 +84,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback, 
         if (chibi1 != null) {
             this.chibi1.draw(canvas);
         }
-        for (Actress chibi : lstChibi) {
+        for (Boy chibi : lstChibi) {
             chibi.draw(canvas);
         }
 
@@ -99,8 +99,8 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback, 
     public void surfaceCreated(SurfaceHolder surfaceHolder) {
 //        Bitmap chibiBitmap1 = BitmapFactory.decodeResource(this.getResources(), R.drawable.chibi1);
         lstChibi = new ArrayList<>();
-        Actress chibi2 = new Actress(chibiBitmap1, this.getWidth() / 2, this.getHeight() / 2, this);
-        this.chibi1 = new Actress(chibiBitmap1, this.getWidth() / 2, this.getHeight() / 2, this);
+        Boy chibi2 = new Boy(chibiBitmap1, this.getWidth() / 2, this.getHeight() / 2, this);
+        this.chibi1 = new Boy(chibiBitmap1, this.getWidth() / 2, this.getHeight() / 2, this);
         lstChibi.add(chibi2);
         this.gameThread = new GameThread(this, surfaceHolder);
         this.gameThread.setRunning(true);
@@ -134,13 +134,13 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback, 
             this.chibi1.update();
         }
 
-        for (Actress chibi : lstChibi) {
+        for (Boy chibi : lstChibi) {
             chibi.update();
         }
 
-        Iterator<Actress> iterator = this.lstChibi.iterator();
+        Iterator<Boy> iterator = this.lstChibi.iterator();
         while (iterator.hasNext()) {
-            Actress chibi = iterator.next();
+            Boy chibi = iterator.next();
             chibi.update();
         }
 
@@ -149,11 +149,11 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback, 
             this.expl.update();
             if (this.expl.isFinish()) {
                 if(this.chibi1 == null) {
-                    this.chibi1 = new Actress(chibiBitmap1, this.getWidth() / 2, this.getHeight() / 2, this);
+                    this.chibi1 = new Boy(chibiBitmap1, this.getWidth() / 2, this.getHeight() / 2, this);
                 }
 
                 if(lstChibi.size() < 100) {
-                    Actress chibi2 = new Actress(chibiBitmap1, this.getWidth() / 2, this.getHeight() / 2, this);
+                    Boy chibi2 = new Boy(chibiBitmap1, this.getWidth() / 2, this.getHeight() / 2, this);
                     lstChibi.add(chibi2);
 //                this.expl = null;
                 }

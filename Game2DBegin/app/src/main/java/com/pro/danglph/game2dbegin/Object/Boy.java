@@ -4,15 +4,14 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.util.Log;
 
-import com.pro.danglph.game2dbegin.Surface.GameSurface;
 import com.pro.danglph.game2dbegin.Surface.IGameSurface;
 
 /**
  * Created by danglph on 10/07/2017.
  */
 
-public class Actress extends GameMainObject {
-    private static final String TAG = Actress.class.getSimpleName();
+public class Boy extends GameMainObject {
+    private static final String TAG = Boy.class.getSimpleName();
 
     private static final int ROW_TOP_TO_BOTTOM = 0;
     private static final int ROW_RIGHT_TO_LEFT = 1;
@@ -30,19 +29,17 @@ public class Actress extends GameMainObject {
     private Bitmap[] bottomToTops;
 
     // Vận tốc di chuyển của nhân vật (pixel/milisecond).
-    public static final float VELOCITY = 0.1f;
+    private static final float VELOCITY = 0.1f;
 
     private int movingVectorX = 10;
     private int movingVectorY = 5;
 
     private long lastDrawNanoTime = -1;
 
-    private IGameSurface gameSurface;
-
-    public Actress(Bitmap image, int x, int y, IGameSurface gameSurface) {
+    public Boy(Bitmap image, int x, int y, IGameSurface gameSurface) {
         super(image, 4, 3, x, y);
 
-        this.gameSurface = gameSurface;
+        this.igameSurface = gameSurface;
 
         this.topToBottoms = new Bitmap[colCount]; // 3
         this.rightToLefts = new Bitmap[colCount]; // 3
@@ -95,7 +92,6 @@ public class Actress extends GameMainObject {
         // Đổi nano giây ra mili giây (1 nanosecond = 1 / 1000000 millisecond).
         int deltaTime = (int) ((now - lastDrawNanoTime) / 1000000);
 
-
         // Quãng đường mà nhân vật đi được (fixel).
         float distance = VELOCITY * deltaTime;
 
@@ -109,16 +105,16 @@ public class Actress extends GameMainObject {
         if (this.x < 0) {
             this.x = 0;
             this.movingVectorX = -this.movingVectorX;
-        } else if (this.x > this.gameSurface.getWidth() - width) {
-            this.x = this.gameSurface.getWidth() - width;
+        } else if (this.x > this.igameSurface.getWidth() - width) {
+            this.x = this.igameSurface.getWidth() - width;
             this.movingVectorX = -this.movingVectorX;
         }
 
         if (this.y < 0) {
             this.y = 0;
             this.movingVectorY = -this.movingVectorY;
-        } else if (this.y > this.gameSurface.getHeight() - height) {
-            this.y = this.gameSurface.getHeight() - height;
+        } else if (this.y > this.igameSurface.getHeight() - height) {
+            this.y = this.igameSurface.getHeight() - height;
             this.movingVectorY = -this.movingVectorY;
         }
 

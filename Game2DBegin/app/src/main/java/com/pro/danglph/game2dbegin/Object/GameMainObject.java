@@ -1,6 +1,9 @@
 package com.pro.danglph.game2dbegin.Object;
 
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+
+import com.pro.danglph.game2dbegin.Surface.IGameSurface;
 
 /**
  * Created by danglph on 10/07/2017.
@@ -19,6 +22,8 @@ public class GameMainObject {
     protected final int height;
     protected int x;
     protected int y;
+    protected IGameSurface igameSurface;
+
 
     public GameMainObject(Bitmap image, int rowCount, int colCount, int x, int y) {
         this.image = image;
