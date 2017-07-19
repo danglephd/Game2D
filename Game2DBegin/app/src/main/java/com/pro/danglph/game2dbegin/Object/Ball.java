@@ -6,6 +6,8 @@ import android.graphics.Color;
 import android.graphics.Paint;
 
 import com.pro.danglph.game2dbegin.Surface.IGameSurface;
+import com.pro.danglph.game2dbegin.Utility.CommonFeatures;
+import com.pro.danglph.game2dbegin.Utility.SELECTION;
 
 /**
  * Created by danglph on 10/07/2017.
@@ -21,7 +23,7 @@ public class Ball extends GameMainObject {
     private int ballColor = 0;
 
     private Bitmap bitmap = null;
-    private boolean isSelected = false;
+    private SELECTION bgStates = SELECTION.TYPE1;
     private Paint p = null;
 
     public Ball(Bitmap image, int x, int y, IGameSurface iGameSurface, int ballColor) {
@@ -37,6 +39,7 @@ public class Ball extends GameMainObject {
     public Ball(Bitmap image, int x, int y, IGameSurface iGameSurface) {
         super(image, 1, 1, x, y);
         this.igameSurface = iGameSurface;
+        this.ballColor = CommonFeatures.randomIntValue(0, 5);
         bitmap = this.image;
         p = new Paint();
         p.setColor(Color.GREEN);
@@ -44,10 +47,28 @@ public class Ball extends GameMainObject {
     }
 
     private void drawBackground(Canvas canvas) {
-        if (this.isSelected) {
-            p.setColor(Color.GREEN);
-            canvas.drawRect((float) this.x, (float) this.y, (float) this.x + (float) this.getWidth(), (float) this.y + (float) this.getHeight(), p);
+        switch(this.bgStates)
+        {
+            case TYPE1:
+                break;
+            case NOT_SQUARE_TYPE:
+                p.setColor(Color.GRAY);
+                canvas.drawRect((float) this.x, (float) this.y, (float) this.x + (float) this.getWidth(), (float) this.y + (float) this.getHeight(), p);
+                break;
+            case SQUARED_TYPE:
+                p.setColor(Color.GREEN);
+                canvas.drawRect((float) this.x, (float) this.y, (float) this.x + (float) this.getWidth(), (float) this.y + (float) this.getHeight(), p);
+                break;
+            default:
+                p.setColor(Color.GRAY);
+                canvas.drawRect((float) this.x, (float) this.y, (float) this.x + (float) this.getWidth(), (float) this.y + (float) this.getHeight(), p);
+                break;
         }
+//        p.setColor(Color.GREEN);
+
+
+//        if (this.bgStates) {
+//        }
     }
 
     private void drawValue(Canvas canvas) {
@@ -67,8 +88,11 @@ public class Ball extends GameMainObject {
             case 4:
                 p.setColor(Color.YELLOW);
                 break;
+            case 5:
+                p.setColor(Color.CYAN);
+                break;
             default:
-                p.setColor(Color.GREEN);
+                p.setColor(Color.WHITE);
                 break;
         }
 
@@ -97,6 +121,8 @@ public class Ball extends GameMainObject {
     }
 
     public void update() {
+        ballColor = CommonFeatures.randomIntValue(0, 5);
+
         bitmap = Bitmap.createScaledBitmap(image, (int) (image.getWidth() * scaleValue), (int) (image.getHeight() * scaleValue), true);
     }
 
@@ -108,8 +134,8 @@ public class Ball extends GameMainObject {
         isVisible = visible;
     }
 
-    public void setSelected(boolean selected) {
-        isSelected = selected;
+    public void setBgStates(SELECTION bgStates) {
+        this.bgStates = bgStates;
     }
 
     public int getBallColor() {
@@ -118,5 +144,9 @@ public class Ball extends GameMainObject {
 
     public void setBallColor(int ballColor) {
         this.ballColor = ballColor;
+    }
+
+    public boolean isSquared() {
+        return bgStates == SELECTION.SQUARED_TYPE;
     }
 }
