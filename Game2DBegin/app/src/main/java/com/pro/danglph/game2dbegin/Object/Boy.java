@@ -144,7 +144,7 @@ public class Boy extends GameMainObject {
 
         // Thời điểm vẽ cuối cùng (Nano giây).
         this.lastDrawNanoTime = System.nanoTime();
-        Log.i(TAG, "..");
+//        Log.i(TAG, "..");
     }
 
     public void setMovingVector(int movingVectorX, int movingVectorY) {
