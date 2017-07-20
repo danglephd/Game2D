@@ -32,11 +32,18 @@ public class GameMainObject {
         this.x = x;
         this.y = y;
 
-        this.WIDTH = image.getWidth();
-        this.HEIGHT = image.getHeight();
+        if(image != null) {
+            this.WIDTH = image.getWidth();
+            this.HEIGHT = image.getHeight();
 
-        this.width = this.WIDTH / colCount;
-        this.height = this.HEIGHT / rowCount;
+            this.width = this.WIDTH / colCount;
+            this.height = this.HEIGHT / rowCount;
+        }else{
+            this.WIDTH = 0;
+            this.HEIGHT = 0;
+            this.width = this.WIDTH / colCount;
+            this.height = this.HEIGHT / rowCount;
+        }
     }
 
     protected Bitmap createSubImageAt(int row, int col) {

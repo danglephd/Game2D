@@ -10,6 +10,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import com.pro.danglph.game2dbegin.Object.Ball;
+import com.pro.danglph.game2dbegin.Object.Score;
 import com.pro.danglph.game2dbegin.Object.Tiger;
 import com.pro.danglph.game2dbegin.R;
 import com.pro.danglph.game2dbegin.Thread.GameThread;
@@ -23,6 +24,7 @@ import com.pro.danglph.game2dbegin.Utility.SELECTION;
 public class GameSurface2 extends SurfaceView implements SurfaceHolder.Callback, IGameSurface {
     private static final String TAG = GameSurface2.class.getSimpleName();
 
+    private Score score = null;
     private GameThread gameThread;
     private Tiger tiger = null;
     private Ball[] arrayBall = null;
@@ -114,8 +116,8 @@ public class GameSurface2 extends SurfaceView implements SurfaceHolder.Callback,
 //        b_l_Ball_Temp = null;
 //        b_r_Ball_Temp = null;
 
-        Log.d(TAG, "start[" + startx + "," + starty + "]");
-        Log.d(TAG, "end[" + endx + "," + endy + "]");
+//        Log.d(TAG, "start[" + startx + "," + starty + "]");
+//        Log.d(TAG, "end[" + endx + "," + endy + "]");
 
         for (int i = 0; i < arrayBall.length; i++) {
             if (arrayBall[i].isTouched(endx, endy)) {
@@ -134,7 +136,7 @@ public class GameSurface2 extends SurfaceView implements SurfaceHolder.Callback,
                 arrayBall[i].setBgStates(typeSelection);
 //                Log.d(TAG, "start[" + startx + "," + starty + "]");
 //                Log.d(TAG, "end[" + endx + "," + endy + "]");
-                Log.d(TAG, ">>>" + i);
+//                Log.d(TAG, ">>>" + i);
 
                 if (arrayBall[i].isTouched(startx, starty)) {
                     t_l_Ball = arrayBall[i];
@@ -142,22 +144,19 @@ public class GameSurface2 extends SurfaceView implements SurfaceHolder.Callback,
 //                    t_l_Ball_Temp.setBallColor(t_l_Ball.getBallColor());
 //                    t_l_Ball_Temp.setBitmap(t_l_Ball.getBitmap());
 //                    Log.i(TAG, "t_l_Ball>>>" + t_l_Ball.getBallColor());
-                }
-                else if (arrayBall[i].isTouched(endx, starty)) {
+                } else if (arrayBall[i].isTouched(endx, starty)) {
                     t_r_Ball = arrayBall[i];
                     ///for test color
 //                    t_r_Ball_Temp.setBallColor(t_r_Ball.getBallColor());
 //                    t_r_Ball_Temp.setBitmap(t_r_Ball.getBitmap());
 //                    Log.i(TAG, "t_r_Ball>>>" + t_r_Ball.getBallColor());
-                }
-                else if (arrayBall[i].isTouched(startx, endy)) {
+                } else if (arrayBall[i].isTouched(startx, endy)) {
                     b_l_Ball = arrayBall[i];
                     ///for test color
 //                    b_l_Ball_Temp.setBallColor(b_l_Ball.getBallColor());
 //                    b_l_Ball_Temp.setBitmap(b_l_Ball.getBitmap());
 //                    Log.i(TAG, "b_l_Ball>>>" + b_l_Ball.getBallColor());
-                }
-                else if (arrayBall[i].isTouched(endx, endy)) {
+                } else if (arrayBall[i].isTouched(endx, endy)) {
                     b_r_Ball = arrayBall[i];
                     ///for test color
 //                    b_r_Ball_Temp.setBallColor(b_r_Ball.getBallColor());
@@ -193,10 +192,10 @@ public class GameSurface2 extends SurfaceView implements SurfaceHolder.Callback,
                 int x = (int) event.getX();
                 int y = (int) event.getY();
                 selectSquare(x, y);
-                if(isSquareAvailable(this.t_l_Ball, this.t_r_Ball, this.b_l_Ball, this.b_r_Ball)){
+                if (isSquareAvailable(this.t_l_Ball, this.t_r_Ball, this.b_l_Ball, this.b_r_Ball)) {
 //                    Log.i(TAG, "AAA>>>" + x + ", " + y);
                     typeSelection = SELECTION.SQUARED_TYPE;
-                }else{
+                } else {
                     typeSelection = SELECTION.NOT_SQUARE_TYPE;
                 }
             }
@@ -238,6 +237,11 @@ public class GameSurface2 extends SurfaceView implements SurfaceHolder.Callback,
                 arrayBall[i].draw(canvas);
             }
         }
+
+//        if (score != null) {
+//            score.draw(canvas);
+//        }
+
         ///for test color
 //        if(t_l_Ball_Temp != null){
 //            t_l_Ball_Temp.draw(canvas);
@@ -258,7 +262,7 @@ public class GameSurface2 extends SurfaceView implements SurfaceHolder.Callback,
         this.tiger = new Tiger(bmTiger, 50, this.getHeight() / 2, this);
         this.ball = new Ball(bmBallred, 50, this.getHeight() / 2, this);
         this.bmBall2 = Bitmap.createScaledBitmap(bmBallred, (int) (bmBallred.getWidth() * scaleValue), (int) (bmBallred.getHeight() * scaleValue), true);
-
+        score = new Score(null, this.getWidth() / 2, this.getHeight() / 2, this);
         ///for test color
 //        this.t_l_Ball_Temp = new Ball(bmBall2, 50, this.getHeight() / 2 + 200, this);
 //        this.t_r_Ball_Temp = new Ball(bmBall2, 350, this.getHeight() / 2 + 200, this);
@@ -285,9 +289,9 @@ public class GameSurface2 extends SurfaceView implements SurfaceHolder.Callback,
         }
     }
 
-    private Bitmap createRandImgBall(int randBall){
+    private Bitmap createRandImgBall(int randBall) {
 
-        switch (randBall){
+        switch (randBall) {
             case 0:
                 return Bitmap.createScaledBitmap(bmBallred, (int) (bmBallred.getWidth() * scaleValue), (int) (bmBallred.getHeight() * scaleValue), true);
             case 1:
@@ -334,6 +338,8 @@ public class GameSurface2 extends SurfaceView implements SurfaceHolder.Callback,
 //        if (ball != null) {
 //            ball.update();
 //        }
-
+        if (score != null) {
+            score.update();
+        }
     }
 }
