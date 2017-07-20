@@ -66,13 +66,17 @@ public class GameSurface2 extends SurfaceView implements SurfaceHolder.Callback,
     }
 
     private void calculatePoint() {
+        int scoreValue = 0;
         for (int i = 0; i < arrayBall.length; i++) {
             if (arrayBall[i].isSquared()) {
                 int randBall = CommonFeatures.randomIntValue(0, CommonFeatures.MAX_BALL);
                 arrayBall[i].setBitmap(createRandImgBall(randBall));
                 arrayBall[i].setBallColor(randBall);
+                scoreValue++;
             }
         }
+        score.setValue(scoreValue + "000");
+        score.setVisible(true);
     }
 
     private boolean isBoardEmpty(Ball[] arrayBall) {
@@ -238,9 +242,9 @@ public class GameSurface2 extends SurfaceView implements SurfaceHolder.Callback,
             }
         }
 
-//        if (score != null) {
-//            score.draw(canvas);
-//        }
+        if (score != null) {
+            score.draw(canvas);
+        }
 
         ///for test color
 //        if(t_l_Ball_Temp != null){
