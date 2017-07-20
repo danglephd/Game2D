@@ -39,8 +39,8 @@ public class Ball extends GameMainObject {
     public Ball(Bitmap image, int x, int y, IGameSurface iGameSurface) {
         super(image, 1, 1, x, y);
         this.igameSurface = iGameSurface;
-        this.ballColor = CommonFeatures.randomIntValue(0, 5);
-        bitmap = this.image;
+        this.ballColor = CommonFeatures.randomIntValue(0, CommonFeatures.MAX_BALL);
+        bitmap = image;
         p = new Paint();
         p.setColor(Color.GREEN);
         p.setAlpha(50);
@@ -74,31 +74,31 @@ public class Ball extends GameMainObject {
     private void drawValue(Canvas canvas) {
         switch (ballColor){
             case 0:
-                p.setColor(Color.BLUE);
+                p.setColor(Color.RED);
                 break;
             case 1:
-                p.setColor(Color.GREEN);
+                p.setColor(Color.BLUE);
                 break;
             case 2:
                 p.setColor(Color.GRAY);
                 break;
             case 3:
-                p.setColor(Color.RED);
+                p.setColor(Color.GREEN);
                 break;
             case 4:
-                p.setColor(Color.YELLOW);
+                p.setColor(Color.MAGENTA);
                 break;
             case 5:
-                p.setColor(Color.CYAN);
+                p.setColor(Color.YELLOW);
                 break;
             default:
                 p.setColor(Color.WHITE);
                 break;
         }
 
-        float x = (float) this.x + 10;
-        float y = (float) this.y + 10;
-        canvas.drawRect(x, y, x + (float) this.getWidth() - 20, y + (float) this.getHeight() - 20, p);
+        float x = (float) this.x + 15;
+        float y = (float) this.y + 15;
+        canvas.drawRect(x, y, x + (float) this.getWidth() - 30, y + (float) this.getHeight() - 30, p);
     }
 
     public void draw(Canvas canvas) {
@@ -106,7 +106,7 @@ public class Ball extends GameMainObject {
         if (this.isVisible) {
             canvas.drawBitmap(bitmap, this.x, this.y, null);
         }
-        drawValue(canvas);
+//        drawValue(canvas);
     }
 
     public void decreaseScaleVal() {
@@ -148,5 +148,13 @@ public class Ball extends GameMainObject {
 
     public boolean isSquared() {
         return bgStates == SELECTION.SQUARED_TYPE;
+    }
+
+    public void setBitmap(Bitmap bitmap) {
+        this.bitmap = bitmap;
+    }
+
+    public Bitmap getBitmap() {
+        return bitmap;
     }
 }

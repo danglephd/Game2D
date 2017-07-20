@@ -8,6 +8,8 @@ import java.util.Random;
 
 public class CommonFeatures {
 
+    public static final int MAX_BALL = 6;
+
     public static int randomIntValue(int min, int max) {
         Random rand = new Random();
         return rand.nextInt(max);
