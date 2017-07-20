@@ -1,13 +1,16 @@
 package com.pro.danglph.game2dbegin.Surface;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.widget.TextView;
 
 import com.pro.danglph.game2dbegin.Object.Ball;
 import com.pro.danglph.game2dbegin.Object.Score;
@@ -24,6 +27,7 @@ import com.pro.danglph.game2dbegin.Utility.SELECTION;
 public class GameSurface2 extends SurfaceView implements SurfaceHolder.Callback, IGameSurface {
     private static final String TAG = GameSurface2.class.getSimpleName();
 
+    private int totalScore = 0;
     private Score score = null;
     private GameThread gameThread;
     private Tiger tiger = null;
@@ -51,6 +55,22 @@ public class GameSurface2 extends SurfaceView implements SurfaceHolder.Callback,
     private SELECTION typeSelection = SELECTION.TYPE1;
     private float scaleValue = 0.5f;
 
+    public GameSurface2(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
+        // TODO Auto-generated constructor stub
+    }
+
+    public GameSurface2(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        // TODO Auto-generated constructor stub
+
+        // Đảm bảo Game Surface có thể focus để điều khiển các sự kiện.
+        this.setFocusable(true);
+
+        // Sét đặt các sự kiện liên quan tới Game.
+        this.getHolder().addCallback(this);
+    }
+
     public GameSurface2(Context context) {
         super(context);
 
@@ -74,6 +94,11 @@ public class GameSurface2 extends SurfaceView implements SurfaceHolder.Callback,
                 arrayBall[i].setBallColor(randBall);
                 scoreValue++;
             }
+        }
+        totalScore += scoreValue;
+        TextView textView = ((Activity)(this.getContext())).findViewById(R.id.textView);
+        if(textView != null) {
+            textView.setText(totalScore + "000");
         }
         score.setValue(scoreValue + "000");
         score.setVisible(true);
@@ -345,5 +370,9 @@ public class GameSurface2 extends SurfaceView implements SurfaceHolder.Callback,
         if (score != null) {
             score.update();
         }
+    }
+
+    public Score getScore() {
+        return score;
     }
 }

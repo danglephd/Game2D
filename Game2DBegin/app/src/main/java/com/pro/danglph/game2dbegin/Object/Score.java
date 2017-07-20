@@ -64,4 +64,8 @@ public class Score extends GameMainObject {
     public void setVisible(boolean visible) {
         isVisible = visible;
     }
+
+    public String getValue() {
+        return text;
+    }
 }
