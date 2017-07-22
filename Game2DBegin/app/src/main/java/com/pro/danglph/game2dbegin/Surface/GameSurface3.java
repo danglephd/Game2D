@@ -53,7 +53,7 @@ public class GameSurface3 extends SurfaceView implements SurfaceHolder.Callback,
     private Bitmap bmBall2 = null;
     private SELECTION typeSelection = SELECTION.TYPE1;
     private float scaleValue = 0.5f;
-    private int numbCol = 15;
+    private int numbCol = 11;
     private int numbRow = 17;
 
     public GameSurface3(Context context, AttributeSet attrs, int defStyle) {
