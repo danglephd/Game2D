@@ -6,7 +6,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -38,6 +37,8 @@ public class GameSurface2 extends SurfaceView implements SurfaceHolder.Callback,
     private Ball t_r_Ball = null;
     private Ball b_l_Ball = null;
     private Ball b_r_Ball = null;
+    int numbcol = 15;
+    int numbrow = 17;
 
 //    private Ball t_l_Ball_Temp = null;
 //    private Ball t_r_Ball_Temp = null;
@@ -53,7 +54,7 @@ public class GameSurface2 extends SurfaceView implements SurfaceHolder.Callback,
     private Bitmap bmBallyellow = BitmapFactory.decodeResource(this.getResources(), R.drawable.ballyellow);
     private Bitmap bmBall2 = null;
     private SELECTION typeSelection = SELECTION.TYPE1;
-    private float scaleValue = 0.5f;
+    private float scaleValue = 0.4f;
 
     public GameSurface2(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
@@ -96,8 +97,8 @@ public class GameSurface2 extends SurfaceView implements SurfaceHolder.Callback,
             }
         }
         totalScore += scoreValue;
-        TextView textView = ((Activity)(this.getContext())).findViewById(R.id.textView);
-        if(textView != null) {
+        TextView textView = ((Activity) (this.getContext())).findViewById(R.id.textView);
+        if (textView != null) {
             textView.setText(totalScore + "000");
         }
         score.setValue(scoreValue + "000");
@@ -298,7 +299,7 @@ public class GameSurface2 extends SurfaceView implements SurfaceHolder.Callback,
 //        this.b_l_Ball_Temp = new Ball(bmBall2, 50, this.getHeight() / 2 + 400, this);
 //        this.b_r_Ball_Temp = new Ball(bmBall2, 350, this.getHeight() / 2 + 400, this);
 
-        initBoard(15, 17);
+        initBoard(numbcol, numbrow);
 
         this.gameThread = new GameThread(this, surfaceHolder);
         this.gameThread.setRunning(true);
