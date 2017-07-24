@@ -19,14 +19,17 @@ public class MainActivity extends Activity {
         // Set fullscreen
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         // Loại bỏ tiêu đề.
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
+
 //        setContentView(new GameSurface(this));
 //        setContentView(new GameSurface2(this));
 
-        setContentView(R.layout.activity_main);
+//        setContentView(R.layout.activity_main);
+        setContentView(R.layout.game_layout);
 
 //        GameSurface2 game = findViewById(R.id.gameSurface2);
 //        TextView textView = findViewById(R.id.textView);
