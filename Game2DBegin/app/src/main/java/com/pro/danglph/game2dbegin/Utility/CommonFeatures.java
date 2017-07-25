@@ -9,6 +9,12 @@ import java.util.Random;
 public class CommonFeatures {
 
     public static final int MAX_BALL = 6;
+    public static final int STATE_RUNNING = 0;
+    public static final int STATE_STOP = 1;
+    public static final int STATE_PAUSE = 2;
+    public static final int STATE_LOSE = 3;
+    public static final String saveConfigFile = "saveConfigFile";
+
 
     public static int randomIntValue(int min, int max) {
         Random rand = new Random();

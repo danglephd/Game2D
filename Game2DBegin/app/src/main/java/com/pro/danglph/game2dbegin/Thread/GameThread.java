@@ -6,6 +6,7 @@ import android.view.SurfaceHolder;
 
 import com.pro.danglph.game2dbegin.Surface.GameSurface;
 import com.pro.danglph.game2dbegin.Surface.IGameSurface;
+import com.pro.danglph.game2dbegin.Utility.CommonFeatures;
 
 /**
  * Created by danglph on 10/07/2017.
@@ -14,6 +15,7 @@ import com.pro.danglph.game2dbegin.Surface.IGameSurface;
 public class GameThread extends Thread {
 
     private boolean running;
+    private int mMode = CommonFeatures.STATE_RUNNING;
     private IGameSurface gameSurface;
     private SurfaceHolder surfaceHolder;
 
@@ -35,7 +37,9 @@ public class GameThread extends Thread {
 
                 // Đồng bộ hóa.
                 synchronized (canvas) {
-                    this.gameSurface.update();
+                    if (mMode == CommonFeatures.STATE_RUNNING) {
+                        this.gameSurface.update();
+                    }
                     this.gameSurface.draw(canvas);
                 }
             } catch (Exception e) {
@@ -66,7 +70,27 @@ public class GameThread extends Thread {
         }
     }
 
+    public void pause(){
+        synchronized (this.surfaceHolder) {
+            if (mMode == CommonFeatures.STATE_RUNNING) {
+                setState(CommonFeatures.STATE_PAUSE);
+            }
+        }
+    }
+
+    public void unpause() {
+        // Move the real time clock up to now
+//        synchronized (this.surfaceHolder) {
+//            mLastTime = System.currentTimeMillis() + 100;
+//        }
+        setState(CommonFeatures.STATE_RUNNING);
+    }
+
     public void setRunning(boolean running) {
         this.running = running;
+    }
+
+    private void setState(int state) {
+        this.mMode = state;
     }
 }
