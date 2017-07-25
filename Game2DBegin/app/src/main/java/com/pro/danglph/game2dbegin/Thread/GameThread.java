@@ -57,7 +57,6 @@ public class GameThread extends Thread {
             if (waitTime < 10) {
                 waitTime = 10; // Millisecond.
             }
-            Log.i("info", " Wait Time=" + waitTime);
 
             try {
                 // Ngừng chương trình một chút.
@@ -66,7 +65,6 @@ public class GameThread extends Thread {
 
             }
             startTime = System.nanoTime();
-            Log.i("info", ".");
         }
     }
 

@@ -21,6 +21,7 @@ import com.pro.danglph.game2dbegin.Thread.GameThread;
 import com.pro.danglph.game2dbegin.Utility.CommonFeatures;
 import com.pro.danglph.game2dbegin.Utility.SELECTION;
 
+
 /**
  * Created by danglph on 10/07/2017.
  */
@@ -84,49 +85,80 @@ public class GameSurface2 extends SurfaceView implements SurfaceHolder.Callback,
         this.getHolder().addCallback(this);
     }
 
-    private void loadGameData() {
+    private String loadGameData() {
 
-//        Activity context = ((Activity) (this.getContext()));
+        Activity context = ((Activity) (this.getContext()));
 
-//        SharedPreferences sharedPref = context.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = context.getPreferences(Context.MODE_PRIVATE);
         try {
-            totalScore = Long.parseLong(this.getResources().getString(R.string.score));
+            totalScore = Long.parseLong(sharedPref.getString(this.getResources().getString(R.string.score), "0"));
+            return sharedPref.getString(this.getResources().getString(R.string.board), "");
 
         } catch (Exception ex) {
             totalScore = 0;
             Log.e(TAG, ex.getMessage());
+            return "";
         }
     }
 
     public void saveGameData() {
         try {
+            String boardStr = dataBoard(this.numbcol, this.numbrow, this.arrayBall);
             Activity context = ((Activity) (this.getContext()));
 
             SharedPreferences sharedPref = context.getPreferences(Context.MODE_PRIVATE);
 
             SharedPreferences.Editor editor = sharedPref.edit();
             editor.putString(this.getResources().getString(R.string.score), totalScore + "");
+            editor.putString(this.getResources().getString(R.string.board), boardStr);
             editor.commit();
         } catch (Exception ex) {
             Log.e(TAG, ex.getMessage());
         }
     }
 
+    private String dataBoard(int numbcol, int numbrow, Ball[] arrayBall) {
+        if(arrayBall != null) {
+            StringBuilder boardStr = new StringBuilder();
+            boardStr.append(numbcol);
+            boardStr.append(CommonFeatures.splitCharactor_5);
+            boardStr.append(numbrow);
+            boardStr.append(CommonFeatures.splitCharactor_5);
+            for (Ball ball : arrayBall) {
+                boardStr.append(ball.getBallColor());
+            }
+            boardStr.append(CommonFeatures.splitCharactor_3);
+            return boardStr.toString();
+        }else{
+            return "";
+        }
+    }
+
 
     private void initializeGame() {
-        loadGameData();
-        this.bmBall2 = Bitmap.createScaledBitmap(bmBallred, (int) (bmBallred.getWidth() * scaleValue), (int) (bmBallred.getHeight() * scaleValue), true);
+        String databoard = loadGameData();
         score = new Score(null, this.getWidth() / 2, this.getHeight() / 2, this);
-        ///for test color
+        try {
+            String[] splitData = databoard.split(CommonFeatures.splitCharactor_5);
+            numbcol = Integer.parseInt(splitData[0]);// số cột
+            numbrow = Integer.parseInt(splitData[1]);// số dòng
+            initBoard(numbcol, numbrow, splitData[2]);// board game
+            //sau này bổ sung các lưu khác
+
+        }catch(Exception ex){
+            Log.e(TAG, ex.getMessage());
+            this.bmBall2 = Bitmap.createScaledBitmap(bmBallred, (int) (bmBallred.getWidth() * scaleValue), (int) (bmBallred.getHeight() * scaleValue), true);
+            ///for test color
 //        this.t_l_Ball_Temp = new Ball(bmBall2, 50, this.getHeight() / 2 + 200, this);
 //        this.t_r_Ball_Temp = new Ball(bmBall2, 350, this.getHeight() / 2 + 200, this);
 //        this.b_l_Ball_Temp = new Ball(bmBall2, 50, this.getHeight() / 2 + 400, this);
 //        this.b_r_Ball_Temp = new Ball(bmBall2, 350, this.getHeight() / 2 + 400, this);
 
-        numbrow = this.getWidth() / ((int) (bmBallred.getWidth() * scaleValue));
-        numbcol = this.getHeight() / ((int) (bmBallred.getHeight() * scaleValue));
+            numbrow = this.getWidth() / ((int) (bmBallred.getWidth() * scaleValue));
+            numbcol = this.getHeight() / ((int) (bmBallred.getHeight() * scaleValue));
 
-        initBoard(numbcol, numbrow);
+            initBoard(numbcol, numbrow, "");
+        }
         updateScore();
     }
 
@@ -150,6 +182,7 @@ public class GameSurface2 extends SurfaceView implements SurfaceHolder.Callback,
 //            }
 //        }
         totalScore += scoreValue;
+//        saveGameData();
         updateScore();
         score.setValue(scoreValue + "000");
         score.setVisible(true);
@@ -354,16 +387,28 @@ public class GameSurface2 extends SurfaceView implements SurfaceHolder.Callback,
         this.gameThread.unpause();
     }
 
-    private void initBoard(int numcol, int numrow) {
+    private void initBoard(int numcol, int numrow, String boardGame) {
         int length = numcol * numrow;
         this.arrayBall = new Ball[length];
         int randBall = 0;
-        for (int i = 0; i < numrow; i++) {
-            for (int j = 0; j < numcol; j++) {
-                randBall = CommonFeatures.randomIntValue(0, CommonFeatures.MAX_BALL);
-                bmBall2 = createRandImgBall(randBall);
-                arrayBall[i * numcol + j] = new Ball(bmBall2, i * bmBall2.getWidth(), j * bmBall2.getHeight(), this, randBall);
+        if(boardGame.equals("")) {
+            for (int i = 0; i < numrow; i++) {
+                for (int j = 0; j < numcol; j++) {
+                    randBall = CommonFeatures.randomIntValue(0, CommonFeatures.MAX_BALL);
+                    bmBall2 = createRandImgBall(randBall);
+                    arrayBall[i * numcol + j] = new Ball(bmBall2, i * bmBall2.getWidth(), j * bmBall2.getHeight(), this, randBall);
+                }
             }
+        }else{
+            int k = 0;
+            for (int i = 0; i < numrow; i++) {
+                for (int j = 0; j < numcol; j++) {
+                    randBall = Integer.parseInt(boardGame.charAt(k++) + "");
+                    bmBall2 = createRandImgBall(randBall);
+                    arrayBall[i * numcol + j] = new Ball(bmBall2, i * bmBall2.getWidth(), j * bmBall2.getHeight(), this, randBall);
+                }
+            }
+
         }
     }
 
@@ -410,17 +455,18 @@ public class GameSurface2 extends SurfaceView implements SurfaceHolder.Callback,
     @Override
     public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
         boolean retry = true;
+        this.gameThread.setRunning(false);
         while (retry) {
             try {
-                this.gameThread.setRunning(false);
 
                 // Luồng cha, cần phải tạm dừng chờ GameThread kết thúc.
                 this.gameThread.join();
+                retry = false;
             } catch (InterruptedException e) {
                 retry = false;
                 e.printStackTrace();
             }
-            retry = true;
+//            retry = true;
         }
     }
 

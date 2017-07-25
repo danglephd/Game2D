@@ -20,9 +20,6 @@ public class MainActivity extends Activity {
         super.onBackPressed();
         if(game != null && (game instanceof GameSurface2)){
             ((GameSurface2) game).saveGameData();
-
-            String txt = this.getResources().getString(R.string.score);
-            Log.i("abc", txt);
         }
     }
 
@@ -30,18 +27,23 @@ public class MainActivity extends Activity {
     protected void onPause() {
         super.onPause();
 
-//        if(game != null && (game instanceof GameSurface2)) {
-//            ((GameSurface2) game).onPause();
-//        }
+        if(game != null && (game instanceof GameSurface2)) {
+            ((GameSurface2) game).onPause();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(game != null && (game instanceof GameSurface2)){
+            ((GameSurface2) game).saveGameData();
+        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 
-//        if(game != null && (game instanceof GameSurface2)) {
-//            ((GameSurface2) game).onResume();
-//        }
     }
 
     @Override
