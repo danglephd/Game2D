@@ -42,14 +42,21 @@ public class Score extends GameMainObject {
             canvas.drawText(text, (float) this.getX(), (float) this.getY(), p);
         }
     }
+    private int fibonacci_a = 1;
+    private int fibonacci_b = 0;
 
     public void update() {
         if (isVisible) {
-            transparent -= 13;
-            texSize += 20;
+            transparent -= fibonacci_a;
+            texSize += 10;
+            int temp = fibonacci_a + fibonacci_b;
+            fibonacci_b = fibonacci_a;
+            fibonacci_a = temp;
             if (transparent < 0) {
-                transparent = 205;
-                texSize = 100.0f;
+                fibonacci_a = 1;
+                fibonacci_b = 0;
+                transparent = 255;
+                texSize = 80.0f;
                 isVisible = false;
             }
             p.setTextSize(texSize);
