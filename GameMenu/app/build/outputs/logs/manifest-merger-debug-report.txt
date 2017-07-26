@@ -1,0 +1,98 @@
+-- Merging decision tree log ---
+manifest
+ADDED from D:\Backup\Android\MyProjects\Game2DBegin\Game2D\GameMenu\app\src\main\AndroidManifest.xml:2:1-26:12
+	package
+		ADDED from D:\Backup\Android\MyProjects\Game2DBegin\Game2D\GameMenu\app\src\main\AndroidManifest.xml:3:7-38
+		INJECTED from D:\Backup\Android\MyProjects\Game2DBegin\Game2D\GameMenu\app\src\main\AndroidManifest.xml
+		INJECTED from D:\Backup\Android\MyProjects\Game2DBegin\Game2D\GameMenu\app\src\main\AndroidManifest.xml
+	android:versionName
+		ADDED from D:\Backup\Android\MyProjects\Game2DBegin\Game2D\GameMenu\app\src\main\AndroidManifest.xml:5:7-32
+		INJECTED from D:\Backup\Android\MyProjects\Game2DBegin\Game2D\GameMenu\app\src\main\AndroidManifest.xml
+		INJECTED from D:\Backup\Android\MyProjects\Game2DBegin\Game2D\GameMenu\app\src\main\AndroidManifest.xml
+	android:versionCode
+		ADDED from D:\Backup\Android\MyProjects\Game2DBegin\Game2D\GameMenu\app\src\main\AndroidManifest.xml:4:7-30
+		INJECTED from D:\Backup\Android\MyProjects\Game2DBegin\Game2D\GameMenu\app\src\main\AndroidManifest.xml
+		INJECTED from D:\Backup\Android\MyProjects\Game2DBegin\Game2D\GameMenu\app\src\main\AndroidManifest.xml
+	xmlns:android
+		ADDED from D:\Backup\Android\MyProjects\Game2DBegin\Game2D\GameMenu\app\src\main\AndroidManifest.xml:2:11-69
+uses-sdk
+ADDED from D:\Backup\Android\MyProjects\Game2DBegin\Game2D\GameMenu\app\src\main\AndroidManifest.xml:6:5-43
+MERGED from [com.android.support:appcompat-v7:26.0.0-alpha1] C:\Users\danglph\.android\build-cache\c65f8be57cb40d5e774b6b03ea19f8850ee0cce4\output\AndroidManifest.xml:21:5-23:78
+MERGED from [com.android.support:support-v4:26.0.0-alpha1] C:\Users\danglph\.android\build-cache\bcd971fd699fb6387c2ee5b0d69a7309bf4c92ff\output\AndroidManifest.xml:21:5-23:54
+MERGED from [com.android.support:support-media-compat:26.0.0-alpha1] C:\Users\danglph\.android\build-cache\0c6fce772c6eb724aa80856b08191f10f32015d0\output\AndroidManifest.xml:21:5-23:63
+MERGED from [com.android.support:support-fragment:26.0.0-alpha1] C:\Users\danglph\.android\build-cache\46ba4da90545920d394d122ddfd4b5586474fc09\output\AndroidManifest.xml:21:5-23:60
+MERGED from [com.android.support:support-core-ui:26.0.0-alpha1] C:\Users\danglph\.android\build-cache\ca6e548c9a8b02f40e5a8ddf0390c333b506a647\output\AndroidManifest.xml:21:5-23:58
+MERGED from [com.android.support:support-core-utils:26.0.0-alpha1] C:\Users\danglph\.android\build-cache\d285d09cb6d009f50ac616c2ce137188d30546f6\output\AndroidManifest.xml:21:5-23:61
+MERGED from [com.android.support:animated-vector-drawable:26.0.0-alpha1] C:\Users\danglph\.android\build-cache\8524bd91d8f81652dfd3f63580a11b24d126fd3b\output\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-vector-drawable:26.0.0-alpha1] C:\Users\danglph\.android\build-cache\fc196b6669bb120880480d5640c574a4a92112e9\output\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-compat:26.0.0-alpha1] C:\Users\danglph\.android\build-cache\69491e06ce57a20b70ae9cba7a89e065e69a3c73\output\AndroidManifest.xml:21:5-23:58
+MERGED from [com.android.support.constraint:constraint-layout:1.0.2] C:\Users\danglph\.android\build-cache\1ce4ac5e7fcc4401c8f4da00b06255b5e81269db\output\AndroidManifest.xml:5:5-7:41
+	tools:overrideLibrary
+		ADDED from [com.android.support:appcompat-v7:26.0.0-alpha1] C:\Users\danglph\.android\build-cache\c65f8be57cb40d5e774b6b03ea19f8850ee0cce4\output\AndroidManifest.xml:23:9-75
+	android:targetSdkVersion
+		INJECTED from D:\Backup\Android\MyProjects\Game2DBegin\Game2D\GameMenu\app\src\main\AndroidManifest.xml
+		INJECTED from D:\Backup\Android\MyProjects\Game2DBegin\Game2D\GameMenu\app\src\main\AndroidManifest.xml
+	android:minSdkVersion
+		ADDED from D:\Backup\Android\MyProjects\Game2DBegin\Game2D\GameMenu\app\src\main\AndroidManifest.xml:6:15-40
+		INJECTED from D:\Backup\Android\MyProjects\Game2DBegin\Game2D\GameMenu\app\src\main\AndroidManifest.xml
+		INJECTED from D:\Backup\Android\MyProjects\Game2DBegin\Game2D\GameMenu\app\src\main\AndroidManifest.xml
+application
+ADDED from D:\Backup\Android\MyProjects\Game2DBegin\Game2D\GameMenu\app\src\main\AndroidManifest.xml:8:5-25:19
+MERGED from [com.android.support:appcompat-v7:26.0.0-alpha1] C:\Users\danglph\.android\build-cache\c65f8be57cb40d5e774b6b03ea19f8850ee0cce4\output\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-v4:26.0.0-alpha1] C:\Users\danglph\.android\build-cache\bcd971fd699fb6387c2ee5b0d69a7309bf4c92ff\output\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-media-compat:26.0.0-alpha1] C:\Users\danglph\.android\build-cache\0c6fce772c6eb724aa80856b08191f10f32015d0\output\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-fragment:26.0.0-alpha1] C:\Users\danglph\.android\build-cache\46ba4da90545920d394d122ddfd4b5586474fc09\output\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-core-ui:26.0.0-alpha1] C:\Users\danglph\.android\build-cache\ca6e548c9a8b02f40e5a8ddf0390c333b506a647\output\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-core-utils:26.0.0-alpha1] C:\Users\danglph\.android\build-cache\d285d09cb6d009f50ac616c2ce137188d30546f6\output\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:animated-vector-drawable:26.0.0-alpha1] C:\Users\danglph\.android\build-cache\8524bd91d8f81652dfd3f63580a11b24d126fd3b\output\AndroidManifest.xml:26:5-20
+MERGED from [com.android.support:support-vector-drawable:26.0.0-alpha1] C:\Users\danglph\.android\build-cache\fc196b6669bb120880480d5640c574a4a92112e9\output\AndroidManifest.xml:26:5-20
+MERGED from [com.android.support:support-compat:26.0.0-alpha1] C:\Users\danglph\.android\build-cache\69491e06ce57a20b70ae9cba7a89e065e69a3c73\output\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support.constraint:constraint-layout:1.0.2] C:\Users\danglph\.android\build-cache\1ce4ac5e7fcc4401c8f4da00b06255b5e81269db\output\AndroidManifest.xml:9:5-20
+	android:screenOrientation
+		ADDED from D:\Backup\Android\MyProjects\Game2DBegin\Game2D\GameMenu\app\src\main\AndroidManifest.xml:11:6-43
+	android:label
+		ADDED from D:\Backup\Android\MyProjects\Game2DBegin\Game2D\GameMenu\app\src\main\AndroidManifest.xml:10:6-38
+	android:icon
+		ADDED from D:\Backup\Android\MyProjects\Game2DBegin\Game2D\GameMenu\app\src\main\AndroidManifest.xml:9:6-35
+	android:theme
+		ADDED from D:\Backup\Android\MyProjects\Game2DBegin\Game2D\GameMenu\app\src\main\AndroidManifest.xml:12:6-64
+activity#com.pxr.tutorial.menu.MenuActivity
+ADDED from D:\Backup\Android\MyProjects\Game2DBegin\Game2D\GameMenu\app\src\main\AndroidManifest.xml:13:9-20:20
+	android:screenOrientation
+		ADDED from D:\Backup\Android\MyProjects\Game2DBegin\Game2D\GameMenu\app\src\main\AndroidManifest.xml:15:19-55
+	android:label
+		ADDED from D:\Backup\Android\MyProjects\Game2DBegin\Game2D\GameMenu\app\src\main\AndroidManifest.xml:14:19-51
+	android:name
+		ADDED from D:\Backup\Android\MyProjects\Game2DBegin\Game2D\GameMenu\app\src\main\AndroidManifest.xml:13:19-47
+intent-filter#android.intent.action.MAIN+android.intent.category.LAUNCHER
+ADDED from D:\Backup\Android\MyProjects\Game2DBegin\Game2D\GameMenu\app\src\main\AndroidManifest.xml:16:13-19:29
+action#android.intent.action.MAIN
+ADDED from D:\Backup\Android\MyProjects\Game2DBegin\Game2D\GameMenu\app\src\main\AndroidManifest.xml:17:17-69
+	android:name
+		ADDED from D:\Backup\Android\MyProjects\Game2DBegin\Game2D\GameMenu\app\src\main\AndroidManifest.xml:17:25-66
+category#android.intent.category.LAUNCHER
+ADDED from D:\Backup\Android\MyProjects\Game2DBegin\Game2D\GameMenu\app\src\main\AndroidManifest.xml:18:17-77
+	android:name
+		ADDED from D:\Backup\Android\MyProjects\Game2DBegin\Game2D\GameMenu\app\src\main\AndroidManifest.xml:18:27-74
+activity#com.pxr.tutorial.menu.SettingsActivity
+ADDED from D:\Backup\Android\MyProjects\Game2DBegin\Game2D\GameMenu\app\src\main\AndroidManifest.xml:22:9-53
+	android:name
+		ADDED from D:\Backup\Android\MyProjects\Game2DBegin\Game2D\GameMenu\app\src\main\AndroidManifest.xml:22:19-50
+activity#com.pxr.tutorial.menu.MainActivity
+ADDED from D:\Backup\Android\MyProjects\Game2DBegin\Game2D\GameMenu\app\src\main\AndroidManifest.xml:23:9-49
+	android:name
+		ADDED from D:\Backup\Android\MyProjects\Game2DBegin\Game2D\GameMenu\app\src\main\AndroidManifest.xml:23:19-46
+meta-data#android.support.VERSION
+ADDED from [com.android.support:appcompat-v7:26.0.0-alpha1] C:\Users\danglph\.android\build-cache\c65f8be57cb40d5e774b6b03ea19f8850ee0cce4\output\AndroidManifest.xml:25:5-27:41
+MERGED from [com.android.support:support-v4:26.0.0-alpha1] C:\Users\danglph\.android\build-cache\bcd971fd699fb6387c2ee5b0d69a7309bf4c92ff\output\AndroidManifest.xml:25:5-27:41
+MERGED from [com.android.support:support-media-compat:26.0.0-alpha1] C:\Users\danglph\.android\build-cache\0c6fce772c6eb724aa80856b08191f10f32015d0\output\AndroidManifest.xml:25:5-27:41
+MERGED from [com.android.support:support-fragment:26.0.0-alpha1] C:\Users\danglph\.android\build-cache\46ba4da90545920d394d122ddfd4b5586474fc09\output\AndroidManifest.xml:25:5-27:41
+MERGED from [com.android.support:support-core-ui:26.0.0-alpha1] C:\Users\danglph\.android\build-cache\ca6e548c9a8b02f40e5a8ddf0390c333b506a647\output\AndroidManifest.xml:25:5-27:41
+MERGED from [com.android.support:support-core-utils:26.0.0-alpha1] C:\Users\danglph\.android\build-cache\d285d09cb6d009f50ac616c2ce137188d30546f6\output\AndroidManifest.xml:25:5-27:41
+MERGED from [com.android.support:animated-vector-drawable:26.0.0-alpha1] C:\Users\danglph\.android\build-cache\8524bd91d8f81652dfd3f63580a11b24d126fd3b\output\AndroidManifest.xml:22:5-24:41
+MERGED from [com.android.support:support-vector-drawable:26.0.0-alpha1] C:\Users\danglph\.android\build-cache\fc196b6669bb120880480d5640c574a4a92112e9\output\AndroidManifest.xml:22:5-24:41
+MERGED from [com.android.support:support-compat:26.0.0-alpha1] C:\Users\danglph\.android\build-cache\69491e06ce57a20b70ae9cba7a89e065e69a3c73\output\AndroidManifest.xml:25:5-27:41
+	android:value
+		ADDED from [com.android.support:appcompat-v7:26.0.0-alpha1] C:\Users\danglph\.android\build-cache\c65f8be57cb40d5e774b6b03ea19f8850ee0cce4\output\AndroidManifest.xml:27:9-38
+	android:name
+		ADDED from [com.android.support:appcompat-v7:26.0.0-alpha1] C:\Users\danglph\.android\build-cache\c65f8be57cb40d5e774b6b03ea19f8850ee0cce4\output\AndroidManifest.xml:26:9-47
