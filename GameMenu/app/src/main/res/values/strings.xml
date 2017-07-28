@@ -5,4 +5,5 @@
     <string name="save_data" />
     <string name="score" >0</string>
     <string name="board" ></string>
+    <string name="timing" ></string>
 </resources>

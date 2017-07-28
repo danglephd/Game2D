@@ -2,8 +2,10 @@ package com.pxr.tutorial.menu;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ProgressBar;
 
 import com.pxr.tutorial.menu.Surface.GameSurface2;
 import com.pxr.tutorial.menu.Surface.IGameSurface;
@@ -63,6 +65,8 @@ public class MainActivity extends Activity {
 //        setContentView(R.layout.game_layout);
 
         game = findViewById(R.id.gameSurface2);
+        ProgressBar pgbar = findViewById(R.id.progressBar);
+        pgbar.setProgress(pgbar.getMax());
 //        TextView textView = findViewById(R.id.textView);
 //        textView.setText(game.getScore().getValue());
 

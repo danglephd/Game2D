@@ -1,7 +1,9 @@
 package com.pxr.tutorial.menu.Surface;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -11,7 +13,9 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.pxr.tutorial.menu.Object.Ball;
 import com.pxr.tutorial.menu.Object.Score;
@@ -38,10 +42,10 @@ public class GameSurface2 extends SurfaceView implements SurfaceHolder.Callback,
     private Ball[] arrayBall = null;
     private Ball ball = null;
     private Ball startBall = null;
-    private Ball t_l_Ball = null;
-    private Ball t_r_Ball = null;
-    private Ball b_l_Ball = null;
-    private Ball b_r_Ball = null;
+    private int t_l_Ball = -1;
+    private int t_r_Ball = -1;
+    private int b_l_Ball = -1;
+    private int b_r_Ball = -1;
     int numbrow = 15;
     int numbcol = 17;
 
@@ -60,6 +64,10 @@ public class GameSurface2 extends SurfaceView implements SurfaceHolder.Callback,
     private Bitmap bmBall2 = null;
     private SELECTION typeSelection = SELECTION.TYPE1;
     private float scaleValue = 0.4f;
+    private int ballWidth;
+    private int ballHeight;
+    private int subtime = 1;
+    private long lastupdateNanoTime = -1;
 
     public GameSurface2(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
@@ -136,10 +144,15 @@ public class GameSurface2 extends SurfaceView implements SurfaceHolder.Callback,
         }
     }
 
-
     private void initializeGame() {
         String databoard = loadGameData();
         score = new Score(null, this.getWidth() / 2, this.getHeight() / 2, this);
+        long now = System.nanoTime();
+
+        // Chưa vẽ lần nào.
+        if (lastupdateNanoTime == -1) {
+            lastupdateNanoTime = now;
+        }
         try {
             databoard = "";
             String[] splitData = databoard.split(CommonFeatures.splitCharactor_5);
@@ -157,14 +170,14 @@ public class GameSurface2 extends SurfaceView implements SurfaceHolder.Callback,
 //        this.b_l_Ball_Temp = new Ball(bmBall2, 50, this.getHeight() / 2 + 400, this);
 //        this.b_r_Ball_Temp = new Ball(bmBall2, 350, this.getHeight() / 2 + 400, this);
 
-            numbcol = this.getWidth() / ((int) (bmBallred.getWidth() * scaleValue));
-            numbrow = this.getHeight() / ((int) (bmBallred.getHeight() * scaleValue));
+            numbcol = this.getWidth() / (ballWidth);
+            numbrow = this.getHeight() / (ballHeight);
 
             initBoard(numbcol, numbrow, "");
         }
+        initTime();
         updateScore();
     }
-
 
     private void showBoard(Ball[] arrayBall) {
         String txt = "";
@@ -196,8 +209,42 @@ public class GameSurface2 extends SurfaceView implements SurfaceHolder.Callback,
         totalScore += scoreValue;
 //        saveGameData();
         updateScore();
+        updateTime(scoreValue);
         score.setValue(scoreValue + "000");
         score.setVisible(true);
+    }
+
+    private boolean isTimeout() {
+        ProgressBar pgbar = ((Activity) (this.getContext())).findViewById(R.id.progressBar);
+
+        if (pgbar != null && pgbar.getProgress() <= 0) {
+            return true;
+        }
+        return false;
+    }
+
+    private void initTime() {
+        ProgressBar pgbar = ((Activity) (this.getContext())).findViewById(R.id.progressBar);
+        long now = System.nanoTime();
+        if (pgbar != null) {
+            pgbar.setMax((int) (now / 1000000 + 180));
+            pgbar.setProgress(pgbar.getMax() / 2);
+        }
+    }
+
+    private void updateTime(int addingTime) {
+        ProgressBar pgbar = ((Activity) (this.getContext())).findViewById(R.id.progressBar);
+
+        long now = System.nanoTime();
+
+        // Đổi nano giây ra mili giây (1 nanosecond = 1 / 1000000 millisecond).
+        int deltaTime = (int) ((now - lastupdateNanoTime) / 1000000);
+        lastupdateNanoTime = now;
+        if (pgbar != null) {
+            pgbar.setProgress(pgbar.getProgress() - deltaTime + addingTime * 1000);
+//            pgbar.setMax(pgbar.getMax() + addingTime * 1000);
+//            pgbar.setProgress(pgbar.getProgress());
+        }
     }
 
     private void updateScore() {
@@ -247,6 +294,18 @@ public class GameSurface2 extends SurfaceView implements SurfaceHolder.Callback,
         return true;
     }
 
+    private boolean isSquareAvailable(int t_l_ball, int t_r_ball, int b_l_ball, int b_r_ball) {
+        if (t_l_Ball != -1 && t_r_Ball != -1
+                && b_l_Ball != -1 && b_r_Ball != -1) {
+            if ((arrayBall[t_l_Ball].getBallColor() == arrayBall[t_r_Ball].getBallColor()) &&
+                    (arrayBall[t_l_Ball].getBallColor() == arrayBall[b_l_Ball].getBallColor()) &&
+                    (arrayBall[t_l_Ball].getBallColor() == arrayBall[b_r_Ball].getBallColor())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private boolean isSquareAvailable(Ball t_l_Ball, Ball t_r_Ball, Ball b_l_Ball, Ball b_r_Ball) {
         if (t_l_Ball != null && t_r_Ball != null
                 && b_l_Ball != null && b_r_Ball != null) {
@@ -274,10 +333,10 @@ public class GameSurface2 extends SurfaceView implements SurfaceHolder.Callback,
     private void selectSquare(int endx, int endy) {
         int startx = endx;
         int starty = endy;
-        t_l_Ball = null;
-        t_r_Ball = null;
-        b_l_Ball = null;
-        b_r_Ball = null;
+        t_l_Ball = -1;
+        t_r_Ball = -1;
+        b_l_Ball = -1;
+        b_r_Ball = -1;
 //
 //        t_l_Ball_Temp = null;
 //        t_r_Ball_Temp = null;
@@ -298,6 +357,7 @@ public class GameSurface2 extends SurfaceView implements SurfaceHolder.Callback,
             }
         }
 
+        int i = 0;
         for (Ball ball : arrayBall) {
             if (ball.getX() >= startx && ball.getX() <= endx
                     && ball.getY() >= starty && ball.getY() <= endy) {
@@ -307,25 +367,25 @@ public class GameSurface2 extends SurfaceView implements SurfaceHolder.Callback,
 //                Log.d(TAG, ">>>" + i);
 
                 if (ball.isTouched(startx, starty)) {
-                    t_l_Ball = ball;
+                    t_l_Ball = i;
                     ///for test color
 //                    t_l_Ball_Temp.setBallColor(t_l_Ball.getBallColor());
 //                    t_l_Ball_Temp.setBitmap(t_l_Ball.getBitmap());
 //                    Log.i(TAG, "t_l_Ball>>>" + t_l_Ball.getBallColor());
                 } else if (ball.isTouched(endx, starty)) {
-                    t_r_Ball = ball;
+                    t_r_Ball = i;
                     ///for test color
 //                    t_r_Ball_Temp.setBallColor(t_r_Ball.getBallColor());
 //                    t_r_Ball_Temp.setBitmap(t_r_Ball.getBitmap());
 //                    Log.i(TAG, "t_r_Ball>>>" + t_r_Ball.getBallColor());
                 } else if (ball.isTouched(startx, endy)) {
-                    b_l_Ball = ball;
+                    b_l_Ball = i;
                     ///for test color
 //                    b_l_Ball_Temp.setBallColor(b_l_Ball.getBallColor());
 //                    b_l_Ball_Temp.setBitmap(b_l_Ball.getBitmap());
 //                    Log.i(TAG, "b_l_Ball>>>" + b_l_Ball.getBallColor());
                 } else if (ball.isTouched(endx, endy)) {
-                    b_r_Ball = ball;
+                    b_r_Ball = i;
                     ///for test color
 //                    b_r_Ball_Temp.setBallColor(b_r_Ball.getBallColor());
 //                    b_r_Ball_Temp.setBitmap(b_r_Ball.getBitmap());
@@ -334,6 +394,7 @@ public class GameSurface2 extends SurfaceView implements SurfaceHolder.Callback,
             } else {
                 ball.setBgStates(SELECTION.TYPE1);
             }
+            i++;
         }
     }
 
@@ -344,94 +405,6 @@ public class GameSurface2 extends SurfaceView implements SurfaceHolder.Callback,
         }
     }
 
-
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            int x = (int) event.getX();
-            int y = (int) event.getY();
-            typeSelection = SELECTION.NOT_SQUARE_TYPE;
-            startBall = selectStartBall(x, y);
-            if (startBall != null) {
-
-            }
-        } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
-            if (startBall != null) {
-                int x = (int) event.getX();
-                int y = (int) event.getY();
-                selectSquare(x, y);
-                if (isSquareAvailable(this.t_l_Ball, this.t_r_Ball, this.b_l_Ball, this.b_r_Ball)) {
-//                    Log.i(TAG, "AAA>>>" + x + ", " + y);
-                    typeSelection = SELECTION.SQUARED_TYPE;
-                } else {
-                    typeSelection = SELECTION.NOT_SQUARE_TYPE;
-                }
-            }
-        } else if (event.getAction() == MotionEvent.ACTION_UP) {
-            if (startBall != null) {
-                boolean isLosed = false;
-                if (isSquareAvailable(this.t_l_Ball, this.t_r_Ball, this.b_l_Ball, this.b_r_Ball)) {
-                    calculatePoint();
-                    isLosed = isBoardEmpty(this.arrayBall);
-                }
-                clearSquare();
-                if (isLosed) {
-                    //Dừng game
-                    //Thua...
-                }
-            }
-        }
-
-        if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            int x = (int) event.getX();
-            int y = (int) event.getY();
-            if (ball != null && ball.isTouched(x, y)) {
-                ball.decreaseScaleVal();
-            }
-
-            return true;
-        }
-
-
-        return false;
-    }
-
-    @Override
-    public void draw(Canvas canvas) {
-        super.draw(canvas);
-//        if (tiger != null) {
-//            tiger.draw(canvas);
-//        }
-//        if (ball != null) {
-//            ball.draw(canvas);
-//        }
-
-        if (this.arrayBall != null && this.arrayBall.length > 0) {
-            for (Ball ball : this.arrayBall) {
-                ball.draw(canvas);
-            }
-//            (int i = 0; i < this.arrayBall.length; i++) {
-//            }
-        }
-
-        if (score != null) {
-            score.draw(canvas);
-        }
-
-        ///for test color
-//        if(t_l_Ball_Temp != null){
-//            t_l_Ball_Temp.draw(canvas);
-//        }
-//        if(t_r_Ball_Temp != null){
-//            t_r_Ball_Temp.draw(canvas);
-//        }
-//        if(b_l_Ball_Temp != null){
-//            b_l_Ball_Temp.draw(canvas);
-//        }
-//        if(b_r_Ball_Temp != null){
-//            b_r_Ball_Temp.draw(canvas);
-//        }
-    }
 
     public void onPause() {
         this.gameThread.pause();
@@ -454,25 +427,6 @@ public class GameSurface2 extends SurfaceView implements SurfaceHolder.Callback,
                 arrayBall[i * numcol + j] = new Ball(bmBall2, j * bmBall2.getWidth(), i * bmBall2.getHeight(), this, randBall);
             }
         }
-
-//        if (boardGame.equals("")) {
-//            for (int i = 0; i < numrow; i++) {
-//                for (int j = 0; j < numcol; j++) {
-//                    randBall = CommonFeatures.randomIntValue(0, CommonFeatures.MAX_BALL);
-//                    bmBall2 = createRandImgBall(randBall);
-//                    arrayBall[i * numcol + j] = new Ball(bmBall2, i * bmBall2.getWidth(), j * bmBall2.getHeight(), this, randBall);
-//                }
-//            }
-//        } else {
-//            for (int i = 0; i < numrow; i++) {
-//                for (int j = 0; j < numcol; j++) {
-//                    randBall = Integer.parseInt(boardGame.charAt(k++) + "");
-//                    bmBall2 = createRandImgBall(randBall);
-//                    arrayBall[i * numcol + j] = new Ball(bmBall2, i * bmBall2.getWidth(), j * bmBall2.getHeight(), this, randBall);
-//                }
-//            }
-//
-//        }
     }
 
 
@@ -502,6 +456,7 @@ public class GameSurface2 extends SurfaceView implements SurfaceHolder.Callback,
         this.tiger = new Tiger(bmTiger, 50, this.getHeight() / 2, this);
         this.ball = new Ball(bmBallred, 50, this.getHeight() / 2, this);
 
+        initResource();
         initializeGame();
 //        initializeGame2();
         if (this.gameThread == null || this.gameThread.isAlive()) {
@@ -544,27 +499,151 @@ public class GameSurface2 extends SurfaceView implements SurfaceHolder.Callback,
         if (score != null) {
             score.update();
         }
+        updateTime(0);
+        if (isTimeout()) {
+            endGame();
+        }
     }
 
+    private void endGame() {
+
+//            AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+//
+//            dialog.setMessage("This is a demo");
+//
+//            dialog.setPositiveButton("Buy the full version", new DialogInterface.OnClickListener() {
+//                public void onClick(DialogInterface arg0, int arg1) {
+//                    Toast.makeText(getBaseContext(), "BUY IT", Toast.LENGTH_LONG).show();
+//                }
+//            });
+//
+//            dialog.setNegativeButton("Close", new DialogInterface.OnClickListener() {
+//                public void onClick(DialogInterface arg0, int arg1) {}
+//            });
+//
+//            dialog.show();
+
+    }
+
+    @Override
+    public void draw(Canvas canvas) {
+        super.draw(canvas);
+//        if (tiger != null) {
+//            tiger.draw(canvas);
+//        }
+//        if (ball != null) {
+//            ball.draw(canvas);
+//        }
+
+        if (this.arrayBall != null && this.arrayBall.length > 0) {
+            for (Ball ball : this.arrayBall) {
+                ball.draw(canvas);
+            }
+//            (int i = 0; i < this.arrayBall.length; i++) {
+//            }
+        }
+
+        if (score != null) {
+            score.draw(canvas);
+        }
+
+        ///for test color
+//        if(t_l_Ball_Temp != null){
+//            t_l_Ball_Temp.draw(canvas);
+//        }
+//        if(t_r_Ball_Temp != null){
+//            t_r_Ball_Temp.draw(canvas);
+//        }
+//        if(b_l_Ball_Temp != null){
+//            b_l_Ball_Temp.draw(canvas);
+//        }
+//        if(b_r_Ball_Temp != null){
+//            b_r_Ball_Temp.draw(canvas);
+//        }
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            int x = (int) event.getX();
+            int y = (int) event.getY();
+            typeSelection = SELECTION.NOT_SQUARE_TYPE;
+            startBall = selectStartBall(x, y);
+            if (startBall != null) {
+
+            }
+        } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
+            if (startBall != null) {
+                int x = (int) event.getX();
+                int y = (int) event.getY();
+                selectSquare(x, y);
+                if (isSquareAvailable(this.t_l_Ball, this.t_r_Ball, this.b_l_Ball, this.b_r_Ball)) {
+//                    Log.i(TAG, "AAA>>>" + x + ", " + y);
+                    typeSelection = SELECTION.SQUARED_TYPE;
+                } else {
+                    typeSelection = SELECTION.NOT_SQUARE_TYPE;
+                }
+            }
+        } else if (event.getAction() == MotionEvent.ACTION_UP) {
+            if (startBall != null) {
+                boolean isLosed = false;
+                if (isSquareAvailable(this.t_l_Ball, this.t_r_Ball, this.b_l_Ball, this.b_r_Ball)) {
+                    calculatePoint();
+                    isLosed = isBoardEmpty(this.arrayBall);
+                }
+                clearSquare();
+                if (isLosed) {
+                    //Dừng game
+                    //Thua...
+                    endGame();
+                }
+            }
+        }
+
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            int x = (int) event.getX();
+            int y = (int) event.getY();
+            if (ball != null && ball.isTouched(x, y)) {
+                ball.decreaseScaleVal();
+            }
+
+            return true;
+        }
+
+
+        return false;
+    }
+
+    private void initResource() {
+        bmBallred = Bitmap.createScaledBitmap(bmBallred, (int) (bmBallred.getWidth() * scaleValue), (int) (bmBallred.getHeight() * scaleValue), true);
+        bmBallblue = Bitmap.createScaledBitmap(bmBallblue, (int) (bmBallblue.getWidth() * scaleValue), (int) (bmBallblue.getHeight() * scaleValue), true);
+        bmBallgray = Bitmap.createScaledBitmap(bmBallgray, (int) (bmBallgray.getWidth() * scaleValue), (int) (bmBallgray.getHeight() * scaleValue), true);
+        bmBallgreen = Bitmap.createScaledBitmap(bmBallgreen, (int) (bmBallgreen.getWidth() * scaleValue), (int) (bmBallgreen.getHeight() * scaleValue), true);
+        bmBallmagenta = Bitmap.createScaledBitmap(bmBallmagenta, (int) (bmBallmagenta.getWidth() * scaleValue), (int) (bmBallmagenta.getHeight() * scaleValue), true);
+        bmBallyellow = Bitmap.createScaledBitmap(bmBallyellow, (int) (bmBallyellow.getWidth() * scaleValue), (int) (bmBallyellow.getHeight() * scaleValue), true);
+
+        ballWidth = bmBallred.getWidth();
+        ballHeight = bmBallred.getHeight();
+    }
 
     private Bitmap createRandImgBall(int randBall) {
 
         switch (randBall) {
             case 0:
-                return Bitmap.createScaledBitmap(bmBallred, (int) (bmBallred.getWidth() * scaleValue), (int) (bmBallred.getHeight() * scaleValue), true);
+                return bmBallred;
             case 1:
-                return Bitmap.createScaledBitmap(bmBallblue, (int) (bmBallblue.getWidth() * scaleValue), (int) (bmBallblue.getHeight() * scaleValue), true);
+                return bmBallblue;
             case 2:
-                return Bitmap.createScaledBitmap(bmBallgray, (int) (bmBallgray.getWidth() * scaleValue), (int) (bmBallgray.getHeight() * scaleValue), true);
+                return bmBallgray;
             case 3:
-                return Bitmap.createScaledBitmap(bmBallgreen, (int) (bmBallgreen.getWidth() * scaleValue), (int) (bmBallgreen.getHeight() * scaleValue), true);
+                return bmBallgreen;
             case 4:
-                return Bitmap.createScaledBitmap(bmBallmagenta, (int) (bmBallmagenta.getWidth() * scaleValue), (int) (bmBallmagenta.getHeight() * scaleValue), true);
+                return bmBallmagenta;
             case 5:
-                return Bitmap.createScaledBitmap(bmBallyellow, (int) (bmBallyellow.getWidth() * scaleValue), (int) (bmBallyellow.getHeight() * scaleValue), true);
+                return bmBallyellow;
             default:
                 Log.e(TAG, "Value randBall is too large");
-                return Bitmap.createScaledBitmap(bmBallred, (int) (bmBallred.getWidth() * scaleValue), (int) (bmBallred.getHeight() * scaleValue), true);
+                return bmBallyellow;
         }
     }
 }
