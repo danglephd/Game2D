@@ -1,9 +1,7 @@
 package com.pxr.tutorial.menu.Surface;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -15,11 +13,11 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.pxr.tutorial.menu.Object.Ball;
 import com.pxr.tutorial.menu.Object.Score;
 import com.pxr.tutorial.menu.Object.Tiger;
+import com.pxr.tutorial.menu.Object.GameTimer;
 import com.pxr.tutorial.menu.R;
 import com.pxr.tutorial.menu.Thread.GameThread;
 import com.pxr.tutorial.menu.Utility.CommonFeatures;
@@ -67,7 +65,8 @@ public class GameSurface2 extends SurfaceView implements SurfaceHolder.Callback,
     private int ballWidth;
     private int ballHeight;
     private int subtime = 1;
-    private long lastupdateNanoTime = -1;
+//    private long lastupdateNanoTime = -1;
+    private GameTimer gameTimer = null;
 
     public GameSurface2(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
@@ -112,8 +111,16 @@ public class GameSurface2 extends SurfaceView implements SurfaceHolder.Callback,
     }
 
     public void saveGameData() {
+        saveData(false);
+    }
+    private void saveData(boolean isLosed){
+        String boardStr = "";
+        if(isLosed){
+            totalScore = 0;
+        }else{
+            boardStr = dataBoard(this.numbrow, this.numbcol, this.arrayBall);
+        }
         try {
-            String boardStr = dataBoard(this.numbrow, this.numbcol, this.arrayBall);
             Activity context = ((Activity) (this.getContext()));
 
             SharedPreferences sharedPref = context.getPreferences(Context.MODE_PRIVATE);
@@ -147,12 +154,12 @@ public class GameSurface2 extends SurfaceView implements SurfaceHolder.Callback,
     private void initializeGame() {
         String databoard = loadGameData();
         score = new Score(null, this.getWidth() / 2, this.getHeight() / 2, this);
-        long now = System.nanoTime();
-
-        // Chưa vẽ lần nào.
-        if (lastupdateNanoTime == -1) {
-            lastupdateNanoTime = now;
-        }
+//        long now = System.nanoTime();
+//
+//        // Chưa vẽ lần nào.
+//        if (lastupdateNanoTime == -1) {
+//            lastupdateNanoTime = now;
+//        }
         try {
             databoard = "";
             String[] splitData = databoard.split(CommonFeatures.splitCharactor_5);
@@ -209,7 +216,9 @@ public class GameSurface2 extends SurfaceView implements SurfaceHolder.Callback,
         totalScore += scoreValue;
 //        saveGameData();
         updateScore();
-        updateTime(scoreValue);
+        if(gameTimer != null) {
+            gameTimer.update(scoreValue);
+        }
         score.setValue(scoreValue + "000");
         score.setVisible(true);
     }
@@ -225,26 +234,9 @@ public class GameSurface2 extends SurfaceView implements SurfaceHolder.Callback,
 
     private void initTime() {
         ProgressBar pgbar = ((Activity) (this.getContext())).findViewById(R.id.progressBar);
-        long now = System.nanoTime();
-        if (pgbar != null) {
-            pgbar.setMax((int) (now / 1000000 + 180));
-            pgbar.setProgress(pgbar.getMax() / 2);
-        }
-    }
 
-    private void updateTime(int addingTime) {
-        ProgressBar pgbar = ((Activity) (this.getContext())).findViewById(R.id.progressBar);
-
-        long now = System.nanoTime();
-
-        // Đổi nano giây ra mili giây (1 nanosecond = 1 / 1000000 millisecond).
-        int deltaTime = (int) ((now - lastupdateNanoTime) / 1000000);
-        lastupdateNanoTime = now;
-        if (pgbar != null) {
-            pgbar.setProgress(pgbar.getProgress() - deltaTime + addingTime * 1000);
-//            pgbar.setMax(pgbar.getMax() + addingTime * 1000);
-//            pgbar.setProgress(pgbar.getProgress());
-        }
+        gameTimer = new GameTimer();
+        gameTimer.initTime(pgbar);
     }
 
     private void updateScore() {
@@ -499,14 +491,16 @@ public class GameSurface2 extends SurfaceView implements SurfaceHolder.Callback,
         if (score != null) {
             score.update();
         }
-        updateTime(0);
+        if(gameTimer != null) {
+            gameTimer.update(0);
+        }
         if (isTimeout()) {
             endGame();
         }
     }
 
     private void endGame() {
-
+        saveData(true);
 //            AlertDialog.Builder dialog = new AlertDialog.Builder(this);
 //
 //            dialog.setMessage("This is a demo");
