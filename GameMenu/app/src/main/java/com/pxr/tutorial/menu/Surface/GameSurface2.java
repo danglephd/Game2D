@@ -118,7 +118,7 @@ public class GameSurface2 extends SurfaceView implements SurfaceHolder.Callback,
         if(isLosed){
             totalScore = 0;
         }else{
-            boardStr = dataBoard(this.numbrow, this.numbcol, this.arrayBall);
+            boardStr = getDataBoard(this.numbcol, this.numbrow, this.arrayBall);
         }
         try {
             Activity context = ((Activity) (this.getContext()));
@@ -134,7 +134,7 @@ public class GameSurface2 extends SurfaceView implements SurfaceHolder.Callback,
         }
     }
 
-    private String dataBoard(int numbcol, int numbrow, Ball[] arrayBall) {
+    private String getDataBoard(int numbcol, int numbrow, Ball[] arrayBall) {
         if (arrayBall != null) {
             StringBuilder boardStr = new StringBuilder();
             boardStr.append(numbcol);
@@ -161,11 +161,11 @@ public class GameSurface2 extends SurfaceView implements SurfaceHolder.Callback,
 //            lastupdateNanoTime = now;
 //        }
         try {
-            databoard = "";
+//            databoard = "";
             String[] splitData = databoard.split(CommonFeatures.splitCharactor_5);
-            numbrow = Integer.parseInt(splitData[0]);// số cột
-            numbcol = Integer.parseInt(splitData[1]);// số dòng
-            initBoard(numbrow, numbcol, splitData[2]);// board game
+            numbcol = Integer.parseInt(splitData[0]);// số cột
+            numbrow = Integer.parseInt(splitData[1]);// số dòng
+            initBoard(numbcol, numbrow, splitData[2]);// board game
             //sau này bổ sung các lưu khác
 
         } catch (Exception ex) {

@@ -11,26 +11,31 @@ import com.pxr.tutorial.menu.Utility.CommonFeatures;
 public class GameTimer {
 
     private ProgressBar pgbar = null;
-    private long lastupdateNanoTime;
+    private long lastupdateNanoTime = -1;
+    private static final float VELOCITY = 0.1f;
 
     public void initTime(ProgressBar pgbar) {
         this.pgbar = pgbar;
         long now = System.nanoTime();
-        lastupdateNanoTime = now; //26300461937940
+//        lastupdateNanoTime = now; //26300461937940
         if (this.pgbar != null) {
-            this.pgbar.setMax((int) (now / 1000000 + CommonFeatures.MAX_TIME));//GameTimer in milliseconds
+            this.pgbar.setMax(CommonFeatures.MAX_DISTANCE);//GameTimer in milliseconds
             this.pgbar.setProgress(this.pgbar.getMax() / 2);
         }
     }
 
     public void update(int addingTime) {
         long now = System.nanoTime();
-
+        if (lastupdateNanoTime == -1) {
+            lastupdateNanoTime = now;
+        }
         // Đổi nano giây ra mili giây (1 nanosecond = 1 / 1000000 millisecond).
-        int deltaTime = (int) ((now - lastupdateNanoTime) / 1000000 - addingTime * 1000);
-        lastupdateNanoTime = now;
+        int distance = (int) (((now - lastupdateNanoTime) / 1000000 - addingTime * 1000) * VELOCITY);
+        if (distance > 50) {
+            lastupdateNanoTime = now;
+        }
         if (this.pgbar != null) {
-            this.pgbar.setProgress(this.pgbar.getProgress() - deltaTime);
+            this.pgbar.setProgress(this.pgbar.getProgress() - distance);
         }
     }
 
