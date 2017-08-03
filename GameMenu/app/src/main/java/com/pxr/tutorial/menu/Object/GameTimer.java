@@ -16,8 +16,8 @@ public class GameTimer {
 
     public void initTime(ProgressBar pgbar) {
         this.pgbar = pgbar;
-        long now = System.nanoTime();
-//        lastupdateNanoTime = now; //26300461937940
+//        long now = System.nanoTime();
+////        lastupdateNanoTime = now; //26300461937940
         if (this.pgbar != null) {
             this.pgbar.setMax(CommonFeatures.MAX_DISTANCE);//GameTimer in milliseconds
             this.pgbar.setProgress(this.pgbar.getMax() / 2);

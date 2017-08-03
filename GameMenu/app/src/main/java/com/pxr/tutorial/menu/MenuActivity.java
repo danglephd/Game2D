@@ -60,7 +60,9 @@ public class MenuActivity extends Activity implements OnClickListener{
 				startActivity(i);
 				break;
 			case R.id.quick:
-				
+				Intent testActivity = new Intent(this, TestActivity.class);
+				startActivity(testActivity);
+
 				break;
 			case R.id.settings:
 				i = new Intent(this, SettingsActivity.class);

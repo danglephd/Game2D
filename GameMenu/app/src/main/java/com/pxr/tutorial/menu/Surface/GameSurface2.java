@@ -65,8 +65,14 @@ public class GameSurface2 extends SurfaceView implements SurfaceHolder.Callback,
     private int ballWidth;
     private int ballHeight;
     private int subtime = 1;
-//    private long lastupdateNanoTime = -1;
+    //    private long lastupdateNanoTime = -1;
     private GameTimer gameTimer = null;
+//    private Bitmap bmBallRedDefaultSize = BitmapFactory.decodeResource(this.getResources(), R.drawable.ballred);
+//    private Bitmap bmBallBlueDefaultSize = BitmapFactory.decodeResource(this.getResources(), R.drawable.ballblue);
+//    private Bitmap bmBallGrayDefaultSize = BitmapFactory.decodeResource(this.getResources(), R.drawable.ballgray);
+//    private Bitmap bmBallGreenDefaultSize = BitmapFactory.decodeResource(this.getResources(), R.drawable.ballgreen);
+//    private Bitmap bmBallMagentaDefaultSize = BitmapFactory.decodeResource(this.getResources(), R.drawable.ballmagenta);
+//    private Bitmap bmBallYellowDefaultSize = BitmapFactory.decodeResource(this.getResources(), R.drawable.ballyellow);
 
     public GameSurface2(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
@@ -113,11 +119,12 @@ public class GameSurface2 extends SurfaceView implements SurfaceHolder.Callback,
     public void saveGameData() {
         saveData(false);
     }
-    private void saveData(boolean isLosed){
+
+    private void saveData(boolean isLosed) {
         String boardStr = "";
-        if(isLosed){
+        if (isLosed) {
             totalScore = 0;
-        }else{
+        } else {
             boardStr = getDataBoard(this.numbcol, this.numbrow, this.arrayBall);
         }
         try {
@@ -154,12 +161,7 @@ public class GameSurface2 extends SurfaceView implements SurfaceHolder.Callback,
     private void initializeGame() {
         String databoard = loadGameData();
         score = new Score(null, this.getWidth() / 2, this.getHeight() / 2, this);
-//        long now = System.nanoTime();
-//
-//        // Chưa vẽ lần nào.
-//        if (lastupdateNanoTime == -1) {
-//            lastupdateNanoTime = now;
-//        }
+
         try {
 //            databoard = "";
             String[] splitData = databoard.split(CommonFeatures.splitCharactor_5);
@@ -195,32 +197,48 @@ public class GameSurface2 extends SurfaceView implements SurfaceHolder.Callback,
     }
 
     private void calculatePoint() {
+        int scoreValue = getScoreAndChangeBallColor2();
+
+        totalScore += scoreValue;
+//        saveGameData();
+        updateScore();
+        if (gameTimer != null) {
+            gameTimer.update(scoreValue);
+        }
+        score.setValue(scoreValue + "000");
+        score.setVisible(true);
+    }
+
+    private int getScoreAndChangeBallColor2() {
         int scoreValue = 0;
+
+        for (int i = arrayBall.length - 1; i >= 0; i--) {
+            if (arrayBall[i].isSquared()) {
+                if(arrayBall[i].getBallColor() == startBall.getBallColor()) {
+                    int randBall = CommonFeatures.randomIntValue(0, CommonFeatures.MAX_BALL);
+                    arrayBall[i].setBitmap(createRandImgBall(randBall));
+                    arrayBall[i].setBallColor(randBall);
+                    scoreValue++;
+                }
+            }
+        }
+        return scoreValue;
+    }
+
+    private int getScoreAndChangeBallColor1() {
+        int scoreValue = 0;
+
         for (Ball ball :
                 arrayBall) {
             if (ball.isSquared()) {
                 int randBall = CommonFeatures.randomIntValue(0, CommonFeatures.MAX_BALL);
                 ball.setBitmap(createRandImgBall(randBall));
+//                ball.setBitmapBigOne(createBigImgBall(randBall));
                 ball.setBallColor(randBall);
                 scoreValue++;
             }
         }
-//                (int i = 0; i < arrayBall.length; i++) {
-//            if (arrayBall[i].isSquared()) {
-//                int randBall = CommonFeatures.randomIntValue(0, CommonFeatures.MAX_BALL);
-//                arrayBall[i].setBitmap(createRandImgBall(randBall));
-//                arrayBall[i].setBallColor(randBall);
-//                scoreValue++;
-//            }
-//        }
-        totalScore += scoreValue;
-//        saveGameData();
-        updateScore();
-        if(gameTimer != null) {
-            gameTimer.update(scoreValue);
-        }
-        score.setValue(scoreValue + "000");
-        score.setVisible(true);
+        return scoreValue;
     }
 
     private boolean isTimeout() {
@@ -416,6 +434,8 @@ public class GameSurface2 extends SurfaceView implements SurfaceHolder.Callback,
             for (int j = numcol - 1; j >= 0; j--) {
                 randBall = boardGame.equals("") ? CommonFeatures.randomIntValue(0, CommonFeatures.MAX_BALL) : Integer.parseInt(boardGame.charAt(k++) + "");
                 bmBall2 = createRandImgBall(randBall);
+//                Bitmap bigImgBall = createBigImgBall(randBall);
+//                arrayBall[i * numcol + j] = new Ball(bmBall2, bigImgBall, j * bmBall2.getWidth(), i * bmBall2.getHeight(), this, randBall);
                 arrayBall[i * numcol + j] = new Ball(bmBall2, j * bmBall2.getWidth(), i * bmBall2.getHeight(), this, randBall);
             }
         }
@@ -491,9 +511,16 @@ public class GameSurface2 extends SurfaceView implements SurfaceHolder.Callback,
         if (score != null) {
             score.update();
         }
-        if(gameTimer != null) {
+        if (gameTimer != null) {
             gameTimer.update(0);
         }
+
+        if(arrayBall != null){
+            for (Ball ball :arrayBall){
+                ball.update();
+            }
+        }
+
         if (isTimeout()) {
             endGame();
         }
@@ -616,6 +643,14 @@ public class GameSurface2 extends SurfaceView implements SurfaceHolder.Callback,
         bmBallmagenta = Bitmap.createScaledBitmap(bmBallmagenta, (int) (bmBallmagenta.getWidth() * scaleValue), (int) (bmBallmagenta.getHeight() * scaleValue), true);
         bmBallyellow = Bitmap.createScaledBitmap(bmBallyellow, (int) (bmBallyellow.getWidth() * scaleValue), (int) (bmBallyellow.getHeight() * scaleValue), true);
 
+//        scaleValue = 0.6f;
+//        bmBallRedDefaultSize = Bitmap.createScaledBitmap(bmBallRedDefaultSize, (int) (bmBallRedDefaultSize.getWidth() * scaleValue), (int) (bmBallRedDefaultSize.getHeight() * scaleValue), true);
+//        bmBallBlueDefaultSize = Bitmap.createScaledBitmap(bmBallBlueDefaultSize, (int) (bmBallBlueDefaultSize.getWidth() * scaleValue), (int) (bmBallBlueDefaultSize.getHeight() * scaleValue), true);
+//        bmBallGrayDefaultSize = Bitmap.createScaledBitmap(bmBallGrayDefaultSize, (int) (bmBallGrayDefaultSize.getWidth() * scaleValue), (int) (bmBallGrayDefaultSize.getHeight() * scaleValue), true);
+//        bmBallGreenDefaultSize = Bitmap.createScaledBitmap(bmBallGreenDefaultSize, (int) (bmBallGreenDefaultSize.getWidth() * scaleValue), (int) (bmBallGreenDefaultSize.getHeight() * scaleValue), true);
+//        bmBallMagentaDefaultSize = Bitmap.createScaledBitmap(bmBallMagentaDefaultSize, (int) (bmBallMagentaDefaultSize.getWidth() * scaleValue), (int) (bmBallMagentaDefaultSize.getHeight() * scaleValue), true);
+//        bmBallYellowDefaultSize = Bitmap.createScaledBitmap(bmBallYellowDefaultSize, (int) (bmBallYellowDefaultSize.getWidth() * scaleValue), (int) (bmBallYellowDefaultSize.getHeight() * scaleValue), true);
+
         ballWidth = bmBallred.getWidth();
         ballHeight = bmBallred.getHeight();
     }
@@ -640,4 +675,25 @@ public class GameSurface2 extends SurfaceView implements SurfaceHolder.Callback,
                 return bmBallyellow;
         }
     }
+
+//    private Bitmap createBigImgBall(int randBall) {
+//
+//        switch (randBall) {
+//            case 0:
+//                return bmBallRedDefaultSize;
+//            case 1:
+//                return bmBallBlueDefaultSize;
+//            case 2:
+//                return bmBallGrayDefaultSize;
+//            case 3:
+//                return bmBallGreenDefaultSize;
+//            case 4:
+//                return bmBallMagentaDefaultSize;
+//            case 5:
+//                return bmBallYellowDefaultSize;
+//            default:
+//                Log.e(TAG, "Value randBall is too large");
+//                return bmBallYellowDefaultSize;
+//        }
+//    }
 }
